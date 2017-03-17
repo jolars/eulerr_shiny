@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
       ## wrap element in a div with id for ease of removal
       ui = tags$div(
         splitLayout(cellWidths = c("70%", "30%"),
-          textInput(paste0("combo_", id), NULL, id),
+          textInput(paste0("combo_", id), NULL, NULL),
           numericInput(paste0("size_", id), NULL, NULL, min = 0),
           id = id
         )
@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
     combos <- as.vector(size, mode = "double")
 
     names(combos) <- sets
-    combos[!is.na(combos) | !is.null(combos)]
+    na.omit(combos)
   })
 
   euler_plot <- reactive({
