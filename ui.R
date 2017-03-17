@@ -23,6 +23,11 @@ shinyUI(fluidPage(
         h3("Set relationships"),
         p("String together combinations by joining them
           with an ampersand (&)."),
+        radioButtons(
+          "input_type",
+          "Type of relationships",
+          c("Disjoint combinations" = "disjoint", "Unions" = "union")
+        ),
         splitLayout(
           cellWidths = c("70%", "30%"),
           textInput("combo_1", NULL, "A"),

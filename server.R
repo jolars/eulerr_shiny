@@ -67,7 +67,8 @@ shinyServer(function(input, output, session) {
   })
 
   euler_fit <- reactive({
-    euler(combos())
+    euler(combos(),
+          input = input$input_type)
   })
 
   output$stats <- renderTable({
