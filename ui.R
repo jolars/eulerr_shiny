@@ -7,8 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
-library(eulerr)
 library(shiny)
+library(eulerr)
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
