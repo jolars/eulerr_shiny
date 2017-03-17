@@ -37,10 +37,18 @@ shinyServer(function(input, output, session) {
       ## pass in appropriate div id
       selector = paste0("#", inserted[length(inserted)])
     )
-    updateTextInput(session, paste0("combo_", inserted[length(inserted)]),
-                    NULL, NA)
-    updateNumericInput(session, paste0("size_", inserted[length(inserted)]),
-                       NULL, NA)
+    updateTextInput(
+      session,
+      paste0("combo_", inserted[length(inserted)]),
+      NULL,
+      NA
+    )
+    updateNumericInput(
+      session,
+      paste0("size_", inserted[length(inserted)]),
+      NULL,
+      NA
+    )
 
     inserted <<- inserted[-length(inserted)]
   })
@@ -58,9 +66,34 @@ shinyServer(function(input, output, session) {
     na.omit(combos)
   })
 
+  euler_fit <- reactive({
+    euler(combos())
+  })
+
+  output$stats <- renderTable({
+    f <- euler_fit()
+    with(f, data.frame(Input = original.values,
+                       Fit = fitted.values,
+                       Error = region_error))
+  }, rownames = TRUE, width = "100%")
+
   euler_plot <- reactive({
-    fit <- euler(combos())
-    plot(fit)
+
+    plot(
+      euler_fit(),
+      key = input$key,
+      fontface = switch(input$fontface,
+                        Plain = 1,
+                        Bold = 2,
+                        Italic = 3,
+                        "Bold italic" = 4),
+      counts = input$counts,
+      fill_opacity = input$opacity,
+      lty = switch(input$borders,
+                   Solid = 1,
+                   Varying = c(1:6),
+                   None = 0)
+    )
   })
 
   output$euler_diagram <- renderPlot({
@@ -70,10 +103,12 @@ shinyServer(function(input, output, session) {
   # Download the plot
   output$download_plot <- downloadHandler(
     filename = {
-      paste("euler-", Sys.Date(), ".png", sep = "")
+      paste("euler-", Sys.Date(), ".", input$savetype, sep = "")
     },
     content = function(file) {
-      png(file)
+      switch(input$savetype,
+             pdf = pdf(file),
+             png = png(file, type = "cairo", width = 648, height = 648))
       print(euler_plot())
       dev.off()
     })

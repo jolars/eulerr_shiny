@@ -18,36 +18,66 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins
   fluidRow(
     column(
-      4,
+      3,
       wellPanel(
         h3("Set relationships"),
         p("String together combinations by joining them
           with an ampersand (&)."),
-        splitLayout(cellWidths = c("70%", "30%"),
-                    textInput("combo_1", NULL, "A"),
-                    numericInput("size_1", NULL, 5, min = 0)
+        splitLayout(
+          cellWidths = c("70%", "30%"),
+          textInput("combo_1", NULL, "A"),
+          numericInput("size_1", NULL, 5, min = 0)
         ),
-        splitLayout(cellWidths = c("70%", "30%"),
-                    textInput("combo_2", NULL, "B"),
-                    numericInput("size_2", NULL, 2, min = 0)
+        splitLayout(
+          cellWidths = c("70%", "30%"),
+          textInput("combo_2", NULL, "B"),
+          numericInput("size_2", NULL, 2, min = 0)
         ),
-        splitLayout(cellWidths = c("70%", "30%"),
-                    textInput("combo_3", NULL, "A&B"),
-                    numericInput("size_3", NULL, 4, min = 0)
+        splitLayout(
+          cellWidths = c("70%", "30%"),
+          textInput("combo_3", NULL, "A&B"),
+          numericInput("size_3", NULL, 4, min = 0)
         ),
 
         tags$div(id = 'placeholder'),
         actionButton('insertBtn', 'Insert'),
         actionButton('removeBtn', 'Remove')
       ),
-      wellPanel(
-        downloadButton(
-          "download_plot", "Save plot")
-      )
+
+      tableOutput("stats")
     ),
+
     column(
-      8,
+      6,
       plotOutput("euler_diagram")
+    ),
+
+    column(
+      3,
+      sliderInput("opacity", "Opacity", min = 0, max = 1, value = 0.4),
+      splitLayout(
+        checkboxInput("counts", "Show counts"),
+        checkboxInput("key", "Legend")
+      ),
+      radioButtons(
+        "fontface",
+        "Font face",
+        list("Plain", "Bold", "Italic", "Bold italic")
+      ),
+      radioButtons(
+        "borders",
+        "Borders",
+        list("Solid", "Varying", "None")
+      ),
+      splitLayout(
+        downloadButton("download_plot", "Save plot"),
+        radioButtons(
+          "savetype",
+          NULL,
+          list("pdf", "png"),
+          inline = TRUE
+        )
+      )
     )
   )
 ))
