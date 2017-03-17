@@ -15,26 +15,25 @@ shinyServer(function(input, output, session) {
   ## keep track of elements inserted and not yet removed
   inserted <- c()
 
-  observeEvent(input$insertBtn, {
-    btn <- input$insertBtn
+  observeEvent(input$insert_set, {
+    btn <- input$insert_set
     id <- paste0("txt", btn)
     insertUI(
       selector = "#placeholder",
-      ## wrap element in a div with id for ease of removal
       ui = tags$div(
-        splitLayout(cellWidths = c("70%", "30%"),
+        splitLayout(
+          cellWidths = c("70%", "30%"),
           textInput(paste0("combo_", id), NULL, NULL),
           numericInput(paste0("size_", id), NULL, NULL, min = 0),
           id = id
         )
       )
     )
-    inserted <<- c(id, inserted)
+    inserted <<- c(inserted, id)
   })
 
-  observeEvent(input$removeBtn, {
+  observeEvent(input$remove_set, {
     removeUI(
-      ## pass in appropriate div id
       selector = paste0("#", inserted[length(inserted)])
     )
     updateTextInput(

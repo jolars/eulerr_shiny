@@ -36,17 +36,20 @@ shinyUI(fluidPage(
         splitLayout(
           cellWidths = c("70%", "30%"),
           textInput("combo_2", NULL, "B"),
-          numericInput("size_2", NULL, 2, min = 0)
+          numericInput("size_2", NULL, 3, min = 0)
         ),
         splitLayout(
           cellWidths = c("70%", "30%"),
           textInput("combo_3", NULL, "A&B"),
-          numericInput("size_3", NULL, 4, min = 0)
+          numericInput("size_3", NULL, 2, min = 0)
         ),
 
-        tags$div(id = 'placeholder'),
-        actionButton('insertBtn', 'Insert'),
-        actionButton('removeBtn', 'Remove')
+        tags$div(id = "placeholder"),
+
+        splitLayout(
+          actionButton("insert_set", "Insert", width = "100%"),
+          actionButton("remove_set", "Remove", width = "100%")
+        )
       ),
 
       tableOutput("stats")
@@ -54,7 +57,7 @@ shinyUI(fluidPage(
 
     column(
       6,
-      plotOutput("euler_diagram")
+      plotOutput("euler_diagram", height = "500px")
     ),
 
     column(
@@ -74,8 +77,10 @@ shinyUI(fluidPage(
         "Borders",
         list("Solid", "Varying", "None")
       ),
+
+      hr(),
       splitLayout(
-        downloadButton("download_plot", "Save plot"),
+        downloadButton("download_plot", "Save plot", width = "100%"),
         radioButtons(
           "savetype",
           NULL,
