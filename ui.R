@@ -20,7 +20,6 @@ shinyUI(fluidPage(
     column(
       3,
       wellPanel(
-        h3("Set relationships"),
         p("String together combinations by joining them
           with an ampersand (&)."),
         radioButtons(
@@ -51,8 +50,22 @@ shinyUI(fluidPage(
           actionButton("remove_set", "Remove", width = "100%")
         )
       ),
+      wellPanel(
+        fluidRow(
+          column(
+            6,
+            strong("Stress"),
+            textOutput("stress")
+          ),
+          column(
+            6,
+            strong("Diag error"),
+            textOutput("diag_error")
+          )
+        )
+      ),
 
-      tableOutput("stats")
+      tableOutput("table")
     ),
 
     column(
@@ -62,11 +75,29 @@ shinyUI(fluidPage(
 
     column(
       3,
+
+      uiOutput("colors"),
+
       sliderInput("opacity", "Opacity", min = 0, max = 1, value = 0.4),
       splitLayout(
-        checkboxInput("counts", "Show counts"),
-        checkboxInput("key", "Legend")
+        checkboxInput("counts", "Show counts")
       ),
+
+      fluidRow(
+        column(
+          6,
+          checkboxInput("key", "Legend")
+        ),
+        column(
+          6,
+          conditionalPanel(
+            condition = "input.key == true",
+            selectInput("key_space", NULL,
+                        list("top", "bottom", "left", "right"))
+          )
+        )
+      ),
+
       radioButtons(
         "fontface",
         "Font face",

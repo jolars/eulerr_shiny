@@ -59,18 +59,33 @@ shinyServer(function(input, output, session) {
           input = input$input_type)
   })
 
-  output$stats <- renderTable({
+  output$table <- renderTable({
     f <- euler_fit()
-    with(f, data.frame(Input = original.values,
+    df <- with(f, data.frame(Input = original.values,
                        Fit = fitted.values,
                        Error = region_error))
+    colnames(df) <- c("Input", "Fit", "Region error")
+    df
   }, rownames = TRUE, width = "100%")
 
+  output$stress <- renderText({
+    round(euler_fit()$stress, 2)
+  })
+
+  output$diag_error <- renderText({
+    round(euler_fit()$diag_error, 2)
+  })
+
   euler_plot <- reactive({
+    key <- if (input$key) {
+      list(space = input$key_space)
+    } else {
+      FALSE
+    }
 
     plot(
       euler_fit(),
-      key = input$key,
+      key = key,
       fontface = switch(input$fontface,
                         Plain = 1,
                         Bold = 2,
