@@ -1,16 +1,6 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(eulerr)
 
-# Define UI for application that draws a histogram
 shinyUI(
   navbarPage(
     "eulerr",
@@ -18,7 +8,6 @@ shinyUI(
     tabPanel(
       "App",
       fluidPage(
-        # Sidebar with a slider input for number of bins
         fluidRow(
           column(
             3,
@@ -75,25 +64,30 @@ shinyUI(
           ),
           column(
             3,
-            textInput("title", "Title"),
+            textInput("title", "Title", width = "100%"),
+            strong("Colors"),
+            em(p("A comma-separated list of ", a(href = "https://stat.columbia.edu/~tzheng/files/Rcolor.pdf", "x11"),
+              "or", a(href = "https://en.wikipedia.org/wiki/Web_colors#Hex_triplet", "hex colors."))),
             textInput(
               inputId = "fill",
-              label = "Fill colors (hex or x11 names)",
+              label = NULL,
               value = "",
-              placeholder = "steelblue4, #CD5555"
+              placeholder = "steelblue4, #CD5555",
+              width = "100%"
             ),
-            sliderInput("opacity", "Opacity", min = 0, max = 1, value = 0.4),
+            sliderInput("opacity", "Opacity", min = 0, max = 1, value = 0.4,
+                        width = "100%"),
             checkboxInput("counts", "Show counts"),
             fluidRow(
               column(
-                3,
+                4,
                 checkboxInput("key", "Key")
               ),
               column(
-                9,
+                8,
                 conditionalPanel(
                   condition = "input.key == true",
-                  selectInput("key_space", NULL,
+                  selectInput("key_space", NULL, width = "100%",
                               list("top", "bottom", "left", "right"))
                 )
               )
@@ -101,22 +95,30 @@ shinyUI(
             radioButtons(
               "fontface",
               "Font face",
-              list("Plain", "Bold", "Italic", "Bold italic")
+              list("Plain", "Bold", "Italic", "Bold italic"),
+              inline = TRUE
             ),
             radioButtons(
               "borders",
               "Borders",
-              list("Solid", "Varying", "None")
+              list("Solid", "Varying", "None"),
+              inline = TRUE
             ),
 
             hr(),
-            splitLayout(
-              downloadButton("download_plot", "Save plot", width = "100%"),
-              radioButtons(
-                "savetype",
-                NULL,
-                list("pdf", "png"),
-                inline = TRUE
+            fluidRow(
+              column(
+                6,
+                downloadButton("download_plot", "Save plot")
+              ),
+              column(
+                6,
+                radioButtons(
+                  "savetype",
+                  NULL,
+                  list("pdf", "png"),
+                  inline = TRUE
+                )
               )
             )
           )
@@ -132,19 +134,23 @@ shinyUI(
             offset = 3,
             wellPanel(
               h3("Area-proportional diagrams with eulerr"),
-              p("This shiny app is based on an", a(href = "www.r-project.org", "R"),
+              p("This", a(href = "https://shiny.rstudio.com/", "shiny"),
+                "app is based on an",
+                a(href = "www.r-project.org", "R"),
                 "package that I have developed called eulerr. It generates
-                area-proportional euler diagrams using some algorithms
-                and optimization routines."),
-              p(a(href = "https://en.wikipedia.org/wiki/Euler_diagram", "euler diagrams"),
+                area-proportional euler diagrams using some rather groovy algorithms
+                and optimization routines written in", code("R"), "and", code("C++.")),
+              p(a(href = "https://en.wikipedia.org/wiki/Euler_diagram",
+                  "euler diagrams"),
                 "are generalized venn diagrams for which the requirement that all
                 intersections be present is relaxed. They are constructed from
                 a specification of set relationships but may sometimes fail
                 to display these appropriately. For instance, try giving the
-                app the specification", code("A = 5, B = 3, C = 1, A&B = 2, AB&C = 2"),
+                app the specification",
+                code("A = 5, B = 3, C = 1, A&B = 2,AB&C = 2"),
                 "to see what I mean."),
               p("When this happens, eulerr tries to give an indication of how
-                badly they diagram fits the data through the metrics",
+                badly the diagram fits the data through the metrics",
                 em("stress"), "and", em("diag error"), ". The latter of these
                 show the largest difference in percentage points between the specification
                 of any one set combination and its resulting fit. It is the

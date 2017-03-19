@@ -107,8 +107,8 @@ shinyServer(function(input, output, session) {
 
   # Download the plot
   output$download_plot <- downloadHandler(
-    filename = {
-      paste("euler-", Sys.Date(), ".", input$savetype, sep = "")
+    filename = function(){
+      paste0("euler-", Sys.Date(), ".", input$savetype)
     },
     content = function(file) {
       switch(input$savetype,
@@ -116,6 +116,6 @@ shinyServer(function(input, output, session) {
              png = png(file, type = "cairo", width = 648, height = 648))
       print(euler_plot())
       dev.off()
-    })
-
+    }
+  )
 })
