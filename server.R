@@ -77,27 +77,28 @@ shinyServer(function(input, output, session) {
   })
 
   euler_plot <- reactive({
-    key <- if (input$key) {
-      list(space = input$key_space)
-    } else {
-      FALSE
-    }
+    ll <- list()
 
-    plot(
-      euler_fit(),
-      key = key,
-      fontface = switch(input$fontface,
-                        Plain = 1,
-                        Bold = 2,
-                        Italic = 3,
-                        "Bold italic" = 4),
-      counts = input$counts,
-      fill_opacity = input$opacity,
-      lty = switch(input$borders,
-                   Solid = 1,
-                   Varying = c(1:6),
-                   None = 0)
+    ll$x <- euler_fit()
+
+    if (!(input$fill == ""))
+      ll$fill <- gsub("^\\s+|\\s+$", "", unlist(strsplit(input$fill, ",")))
+    if (!is.null(input$title))
+      ll$main <- input$title
+    if (input$key)
+      ll$key <- list(space = input$key_space)
+    ll$fontface <- switch(
+      input$fontface,
+      Plain = 1,
+      Bold = 2,
+      Italic = 3,
+      "Bold italic" = 4
     )
+    ll$counts <- input$counts
+    ll$fill_opacity <- input$opacity
+    ll$lty <- switch(input$borders, Solid = 1, Varying = 1:6, None = 0)
+
+    do.call(plot, ll)
   })
 
   output$euler_diagram <- renderPlot({

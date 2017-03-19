@@ -76,20 +76,25 @@ shinyUI(fluidPage(
     column(
       3,
 
-      uiOutput("colors"),
+      textInput("title", "Title"),
+
+      textInput(
+        inputId = "fill",
+        label = "Fill colors (hex or x11 names)",
+        value = "",
+        placeholder = "steelblue4, #CD5555"
+      ),
 
       sliderInput("opacity", "Opacity", min = 0, max = 1, value = 0.4),
-      splitLayout(
-        checkboxInput("counts", "Show counts")
-      ),
+      checkboxInput("counts", "Show counts"),
 
       fluidRow(
         column(
-          6,
-          checkboxInput("key", "Legend")
+          3,
+          checkboxInput("key", "Key")
         ),
         column(
-          6,
+          9,
           conditionalPanel(
             condition = "input.key == true",
             selectInput("key_space", NULL,
