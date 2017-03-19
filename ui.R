@@ -14,6 +14,7 @@ library(eulerr)
 shinyUI(
   navbarPage(
     "eulerr",
+    inverse = TRUE,
     tabPanel(
       "App",
       fluidPage(
@@ -127,18 +128,8 @@ shinyUI(
       fluidPage(
         fluidRow(
           column(
-            2,
-            offset = 1,
-            wellPanel(
-              p(strong(a(href = "https://CRAN.R-project.org/package=eulerr", "eulerr on the R package repository CRAN"))),
-              p(strong(a(href = "http://larssonjohan.com", "My personal website"))),
-              p(strong(a(href = "https://github.com/jolars/eulerr", "The Github repository for the r package"))),
-              p(strong(a(href = "https://github.com/jolars/eulerr_shiny", "The Github repository for the shiny app")))
-
-            )
-          ),
-          column(
             6,
+            offset = 3,
             wellPanel(
               h3("Area-proportional diagrams with eulerr"),
               p("This shiny app is based on an", a(href = "www.r-project.org", "R"),
@@ -164,7 +155,7 @@ shinyUI(
                 explain, but I advise the interested reader to read",
                 a(href = "https://www.cs.uic.edu/~wilkinson/Publications/venneuler.pdf",
                   "Leland Wilkinson's excellent paper"), "for a proper brief."),
-              p("I have listed some links on the left if you are keen on
+              p("I have listed some links on the right if you are keen on
                 learning more about eulerr, perhaps even to contribute to its
                 development. Finally, I owe a great deal to the
                 aforementioned Wilkinson as well as",
@@ -172,6 +163,15 @@ shinyUI(
                 "whose work eulerr is built upon."),
               br(),
               p("Johan Larsson")
+            )
+          ),
+          column(
+            2,
+            wellPanel(
+              p(strong(a(href = "https://CRAN.R-project.org/package=eulerr", "eulerr on the R package repository CRAN"))),
+              p(strong(a(href = "http://larssonjohan.com", "My personal website"))),
+              p(strong(a(href = "https://github.com/jolars/eulerr", "The Github repository for the r package"))),
+              p(strong(a(href = "https://github.com/jolars/eulerr_shiny", "The Github repository for the shiny app")))
             )
           )
         )
