@@ -1,0 +1,7 @@
+---
+runtime: shiny
+---
+
+# eulerr
+
+The eulerr app has moved to [jolars.co/shiny/eulerr](http://jolars.co/shiny/eulerr).
